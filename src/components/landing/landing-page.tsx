@@ -410,7 +410,7 @@ export function LandingPage() {
             {/* code pane */}
             <div className="sf-ink-panel p-5">
               <p className="sf-code-line tok-comment mb-3">
-                // generated as you draw
+                {'// generated as you draw'}
               </p>
               {codeLines.map((line, i) => (
                 <div key={i} className="sf-code-line whitespace-pre">

@@ -50,3 +50,5 @@ export const EventHandlerNode = React.forwardRef<
     </div>
   );
 });
+
+EventHandlerNode.displayName = 'EventHandlerNode';
