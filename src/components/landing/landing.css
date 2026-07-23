@@ -1,0 +1,303 @@
+/* ————————————————————————————————————————————————————————————————
+   SimpleFlow landing — "drafting paper" design system.
+   Scoped under .sf-landing so it never leaks into the editor.
+   ———————————————————————————————————————————————————————————————— */
+
+.sf-landing {
+  /* palette */
+  --paper: #f6f2ea;
+  --paper-raised: #fdfbf6;
+  --ink: #211b13;
+  --ink-soft: #57503f;
+  --ink-faint: #8b8271;
+  --line: rgba(33, 27, 19, 0.14);
+  --line-strong: rgba(33, 27, 19, 0.32);
+  --accent: #d94f22;
+  --accent-deep: #b03d17;
+  /* node hues, borrowed from the editor's palette and warmed for paper */
+  --hue-state: #3f6bd6;
+  --hue-worker: #8a4fd3;
+  --hue-parent: #d99a2b;
+  --hue-exception: #ce4f43;
+  --hue-green: #3e7d54;
+
+  /* type */
+  --font-display: 'Tiempos Headline', var(--font-serif), Georgia, serif;
+  --font-body: var(--font-grotesk), 'Helvetica Neue', sans-serif;
+  --font-code: var(--font-mono), 'SF Mono', monospace;
+
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* paper texture: dot grid + a soft vignette of warmer light */
+.sf-landing::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+      ellipse 80% 55% at 50% -10%,
+      rgba(217, 79, 34, 0.05),
+      transparent 60%
+    ),
+    radial-gradient(circle, rgba(33, 27, 19, 0.13) 1px, transparent 1.1px);
+  background-size:
+    100% 100%,
+    26px 26px;
+  background-position:
+    0 0,
+    13px 13px;
+}
+
+/* film grain, very quiet */
+.sf-landing::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.13 0 0 0 0 0.11 0 0 0 0 0.07 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.sf-landing > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ——— type helpers ——— */
+
+.sf-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.sf-tag {
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  letter-spacing: 0.07em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.sf-tag::before {
+  content: '[ ';
+  color: var(--ink-faint);
+}
+
+.sf-tag::after {
+  content: ' ]';
+  color: var(--ink-faint);
+}
+
+/* ——— buttons ——— */
+
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.sf-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.sf-btn--ink {
+  background: var(--ink);
+  color: var(--paper-raised);
+  box-shadow: 0 1px 0 rgba(33, 27, 19, 0.4);
+}
+
+.sf-btn--ink:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -6px rgba(176, 61, 23, 0.55);
+}
+
+.sf-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.sf-btn--ghost:hover {
+  border-color: var(--ink);
+  background: var(--paper-raised);
+  transform: translateY(-1px);
+}
+
+/* ——— framed cards ——— */
+
+.sf-frame {
+  background: var(--paper-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 0 rgba(33, 27, 19, 0.06),
+    0 24px 60px -30px rgba(33, 27, 19, 0.35);
+}
+
+.sf-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sf-titlebar-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.sf-titlebar-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+}
+
+/* ——— ink (dark) panels: code + terminal ——— */
+
+.sf-ink-panel {
+  background: #262019;
+  color: #e9e2d4;
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  line-height: 1.75;
+}
+
+.sf-ink-panel .tok-key {
+  color: #e9e2d4;
+}
+
+.sf-ink-panel .tok-str {
+  color: #e0a458;
+}
+
+.sf-ink-panel .tok-punc {
+  color: #877d6b;
+}
+
+.sf-ink-panel .tok-state {
+  color: #92aef0;
+}
+
+.sf-ink-panel .tok-comment {
+  color: #877d6b;
+  font-style: italic;
+}
+
+.sf-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  background: #e0a458;
+  vertical-align: text-bottom;
+  animation: sf-blink 1.1s steps(1) infinite;
+}
+
+@keyframes sf-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ——— section reveals (GSAP sets the transforms; this is the resting state) ——— */
+
+.sf-reveal {
+  will-change: transform, opacity;
+}
+
+/* ——— target + feature cards ——— */
+
+.sf-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.6rem;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.sf-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--line-strong);
+  box-shadow: 0 18px 40px -28px rgba(33, 27, 19, 0.45);
+}
+
+.sf-chip {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+}
+
+.sf-chip--live {
+  color: var(--hue-green);
+  border-color: rgba(62, 125, 84, 0.45);
+  background: rgba(62, 125, 84, 0.08);
+}
+
+.sf-chip--soon {
+  color: var(--ink-soft);
+  border-style: dashed;
+}
+
+/* ——— hero canvas SVG ——— */
+
+.sf-canvas-svg text {
+  font-family: var(--font-code);
+}
+
+.sf-marching {
+  stroke-dasharray: 6 6;
+}
+
+/* underline flourish for italic words */
+
+.sf-flourish {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* keep horizontal scroll away on small screens */
+.sf-landing {
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-landing *,
+  .sf-landing *::before,
+  .sf-landing *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
