@@ -227,6 +227,9 @@ export function LandingPage() {
             { drawSVG: '0%', duration: 0.4, stagger: 0.22, ease: 'none' },
             '-=0.1'
           )
+          /* the dashed action edge keeps its own dash pattern, so it fades
+             in rather than being drawn (DrawSVG would overwrite the dashes) */
+          .from('.sf-marching', { autoAlpha: 0, duration: 0.35 }, '-=0.2')
           .from(
             '.sf-mc-arrow',
             { autoAlpha: 0, duration: 0.2, stagger: 0.22 },
@@ -672,7 +675,7 @@ function HeroMachine() {
         fill="none"
       />
       <path
-        className="sf-mc-edge sf-marching"
+        className="sf-marching"
         d="M500 134 L500 206"
         stroke="var(--hue-worker)"
         strokeWidth="1.6"
